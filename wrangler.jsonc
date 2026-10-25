@@ -1,0 +1,19 @@
+{
+  "name": "tally-cloud-friends",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tally-cloud-friends",
+      "database_id": "a2eaebcd-ca56-4336-a389-c1a36a1fdd0c",
+      "migrations_dir": "migrations",
+    },
+  ],
+  "triggers": { "crons": ["*/30 * * * *"] },
+}

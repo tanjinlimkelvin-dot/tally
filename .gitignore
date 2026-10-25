@@ -1,0 +1,9 @@
+.wrangler/
+node_modules/
+.dev.vars
+.dev.vars.*
+Private/
+Working_Materials/
+Deliverables/
+*.log
+.DS_Store
