@@ -35,6 +35,24 @@ Prerequisites: Node.js 22+, a free Cloudflare account, and an iPhone with Safari
 
 Workers' first deployment may ask you to create your free `workers.dev` subdomain. This is not a requirement to buy a domain. Do not enable a paid plan or enter payment details merely to run this app.
 
+## ⚡ iPhone Shortcuts Capture (Apple Pay)
+
+Setting up automatic capture takes less than 2 minutes. Open the **Shortcuts** app on your iPhone and follow these 3 visual steps:
+
+<p align="center">
+  <img src="docs/illustrations/step1-trigger.svg" alt="Step 1: Automation Trigger" width="800">
+</p>
+
+<p align="center">
+  <img src="docs/illustrations/step2-variables.svg" alt="Step 2: Right vs Wrong Variables" width="800">
+</p>
+
+<p align="center">
+  <img src="docs/illustrations/step3-post-json.svg" alt="Step 3: Add Actions" width="800">
+</p>
+
+> **Touch 'n Go & Custom notifications**: See [docs/SHORTCUTS.md](docs/SHORTCUTS.md) for Touch 'n Go eWallet notification setup, or ask your AI agent to format custom bank SMS messages into Tally's JSON ingest format.
+
 ## Data and security
 
 - Each deployment has one owner. A password proves ownership; signed-in access is carried by an HttpOnly session cookie. Shortcut keys are separate bearer credentials, with ingestion-only permissions. Revoke lost keys in Settings.
