@@ -50,7 +50,7 @@ Workers' first deployment may ask you to create your free `workers.dev` subdomai
 
 A shortcut generates a UUID **once per event**, assembles a dictionary, optionally saves that event as one JSON line to a per-source phone archive, and POSTs **only that event**, not the entire growing history.
 
-`POST /api/ingest?format=text` with `Authorization: Bearer YOUR_UPLOAD_KEY` and `Content-Type: application/json`.
+`POST /api/ingest?format=text` with `Authorization: Bearer <YOUR_UPLOAD_TOKEN>` and `Content-Type: application/json`.
 
 Example synthetic non-spending connection test (replace UUID and timestamp, not real personal data):
 

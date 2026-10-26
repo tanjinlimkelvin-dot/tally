@@ -1,5 +1,5 @@
 {
-  "name": "tally-cloud-friends",
+  "name": "tally-cloud",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
   "assets": {
@@ -10,8 +10,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "tally-cloud-friends",
-      "database_id": "a2eaebcd-ca56-4336-a389-c1a36a1fdd0c",
+      "database_name": "tally-cloud-db",
+      "database_id": "YOUR_D1_DATABASE_ID",
       "migrations_dir": "migrations",
     },
   ],
