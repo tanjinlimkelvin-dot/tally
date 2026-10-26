@@ -8,7 +8,7 @@
 
 ### Step 1: Create an Apple Pay Automation Trigger
 
-![Step 1: Create an Automation](/illustrations/step1-trigger.svg)
+![Step 1: Create an Automation](illustrations/step1-trigger.svg)
 
 1. Open the built-in **Shortcuts** app on your iPhone.
 2. Tap the **Automation** tab in the bottom navigation bar.
@@ -22,7 +22,7 @@
 
 ### Step 2: Crucial Rule — Insert Variable Pills, Don't Type Text!
 
-![Step 2: Right vs Wrong Variables](/illustrations/step2-variables.svg)
+![Step 2: Right vs Wrong Variables](illustrations/step2-variables.svg)
 
 This is the #1 beginner mistake when setting up Shortcuts:
 * ❌ **WRONG**: Typing the letters `Amount` on your keyboard. The server receives the English word "Amount", not your transaction number!
@@ -32,7 +32,7 @@ This is the #1 beginner mistake when setting up Shortcuts:
 
 ### Step 3: Add Actions (Only 2 Simple Blocks!)
 
-![Step 3: Action Setup](/illustrations/step3-post-json.svg)
+![Step 3: Action Setup](illustrations/step3-post-json.svg)
 
 In the automation editor, tap **Add Action** and add these two steps:
 

@@ -11,6 +11,7 @@ if style_match:
     h = re.sub(r'<style>.*?</style>', '<link rel="stylesheet" href="/guide.css"><link rel="icon" href="/favicon.png">', h, flags=re.S)
     (root / 'public/guide.css').write_text(style)
 
+h = h.replace('src="../illustrations/', 'src="/illustrations/')
 (root / 'public/guide.html').write_text(h)
 shutil.copytree(root / 'docs/illustrations', root / 'public/illustrations', dirs_exist_ok=True)
 print('Published guide and illustrations, compliant with CSP.')
