@@ -7,7 +7,7 @@ export function cloudSettings(S) {
   const ing=S.ingest||{};
   return `<div class="month"><h2>Settings</h2><span class="cloud-mark">Cloud edition</span></div>
   <section class="section"><div class="section-h"><h2>Automatic capture</h2></div><div class="panel group">
-    <a class="set-row" href="#setup">${icon('tap')}<span>Set up iPhone Shortcuts<span class="sub">Apple Pay, supported TNG notifications and Alliance SMS</span></span>${icon('right')}</a>
+    <a class="set-row" href="#setup">${icon('tap')}<span>Set up iPhone Shortcuts<span class="sub">Apple Pay and Touch 'n Go notifications</span></span>${icon('right')}</a>
     <div class="set-row">${icon('check')}<span>Last received<span class="sub">${ing.last_at?esc(ing.last_at.replace('T',' ').slice(0,19))+' MYT':'No upload received yet'}</span></span></div>
     ${(S.ignoredTaps||[]).map(t=>`<div class="set-row">${icon('close')}<span>Ignored: ${esc(t.label)}</span><button type="button" class="link" data-action="unignore" data-k="${esc(t.merchant_key)}">Log again</button></div>`).join('')}
   </div></section>
@@ -33,12 +33,11 @@ function skippedHTML(rows) {
 export function setupGuide() {
   const url=location.origin+'/api/ingest?format=text';
   return `<div class="month"><h2>Set up capture</h2><a class="link" href="#settings">Back</a></div>
-  <p class="guide-lead">Automatically record expenses when you tap Apple Pay, receive Touch 'n Go notifications, or get bank SMS.</p>
+  <p class="guide-lead">Automatically record expenses when you tap Apple Pay or receive Touch 'n Go notifications.</p>
   
   <div class="guide-choice">
     <button class="chip" data-action="guide-scroll" data-target="wallet-guide">💳 Apple Pay (3 Steps)</button>
     <button class="chip" data-action="guide-scroll" data-target="tng-guide">📱 Touch 'n Go</button>
-    <button class="chip" data-action="guide-scroll" data-target="sms-guide">💬 Bank SMS</button>
   </div>
 
   <section class="guide-block" id="wallet-guide">
@@ -104,21 +103,8 @@ export function setupGuide() {
       </ol>
       <p class="note">Tally automatically extracts the merchant &amp; amount, and filters out top-ups (Cash-In) and ads.</p>
     </div>
-  </section>
-
-  <section class="guide-block" id="sms-guide">
-    <h3>💬 Bank Charge SMS</h3>
-    <div class="panel group pad-note">
-      <ol>
-        <li>Create Automation → Choose <b>Message</b> → Set <b>Message Contains: charged</b>.</li>
-        <li>Add <b>Get Contents of URL</b> (POST) with the same URL &amp; Headers.</li>
-        <li>JSON Fields:
-          <div class="field-spec">
-            <div><code>type</code><span><code>sms</code></span></div>
-            <div><code>text</code><span><b>Shortcut Input</b> (message text)</span></div>
-          </div>
-        </li>
-      </ol>
+    <div class="panel group pad-note" style="margin-top:16px;">
+      <p class="note" style="margin:0;"><b>Want custom bank SMS or other apps?</b> Tally's ingest API accepts standard JSON. Ask your AI agent (ChatGPT, Claude, etc.) to configure a custom Shortcuts action for any notification format you want.</p>
     </div>
   </section>
 

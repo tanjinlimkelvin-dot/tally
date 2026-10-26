@@ -68,11 +68,12 @@ If your iOS version supports the **App / Notification** trigger:
   * `body`: Variable ➔ `Notification ➔ Body`
 * **Smart Filter**: Tally automatically extracts the merchant and amount from the text, while safely ignoring top-ups (Cash-In / GO+), promos, and refunds!
 
-### 2. Bank Charge SMS
-* **Trigger**: Automation ➔ ＋ ➔ Choose **Message** ➔ Set **Message Contains: `charged`**.
-* **Action**: Add **Get Contents of URL** (POST) with JSON fields:
-  * `type`: `sms`
-  * `text`: Variable ➔ `Shortcut Input` (the full message body).
+### 2. Custom Notifications & Bank SMS (AI Agent Setup)
+Tally's `/api/ingest` endpoint accepts any standard JSON payload. If you want to capture specific bank charge SMS or other financial apps beyond Apple Pay and TNG:
+Simply ask your AI agent (ChatGPT, Claude, etc.):
+> *"I use Tally for expense tracking. Here is a bank transaction SMS/notification format: `<paste text>`. How should I configure my iPhone Shortcut to POST this to `/api/ingest`?"*
+
+Your AI agent will give you the exact field mapping and regex trigger for your Shortcuts automation in seconds.
 
 ---
 

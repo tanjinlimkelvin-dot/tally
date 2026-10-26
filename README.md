@@ -8,7 +8,7 @@ No Mini PC, Tailscale, Hermes, bank login, AI service or Apple developer members
 
 - Manual expense entry, custom numeric keypad, merchant/category memory, search and monthly statistics.
 - Custom categories and emoji, reorder, “Count in totals” switch, total/category budgets.
-- Apple Pay tap capture, supported TNG notification capture, supported Alliance debit/credit charge SMS parsing.
+- Apple Pay tap capture and Touch 'n Go (TNG) notification capture out of the box (extensible to any custom notification or bank via AI agent prompt).
 - Missing amount/foreign currency review, possible duplicates with explicit merge, ignored non-payment passes.
 - Monthly/yearly recurring expenses, pause/resume, end month, day-of-month clamping, stable posting IDs.
 - Trash and restore, per-entry change history, CSV export.
@@ -17,20 +17,20 @@ No Mini PC, Tailscale, Hermes, bank login, AI service or Apple developer members
 
 No AI assistant/review, broker or credit-ledger integration, direct bank connection, income tracking, automatic refund reversal, Telegram bot or shared multi-user tenancy. MYR and Asia/Kuala_Lumpur are intentional constraints, not a currency conversion engine. A recurring entry records a planned outgoing payment, not proof the bank debited it.
 
-## Deploy on a friend's account
+## Deploy on Cloudflare
 
-Prefer one independent Cloudflare account/deployment/database per person. A copy of the URL alone is **not** a separate ledger. Do not put several people's records into one single-owner installation.
+Designed for personal, single-owner use with zero server maintenance. Each installation is a private ledger backed by Cloudflare D1.
 
-Prerequisites: Node.js 22+, a free Cloudflare account, terminal access once for deployment. The friend only needs Safari + Shortcuts afterwards.
+Prerequisites: Node.js 22+, a free Cloudflare account, and an iPhone with Safari + Shortcuts.
 
-1. Unzip the source into a new folder. Run `npm ci` and `npx wrangler login`; sign into the **friend's own Cloudflare account** in the browser. No API token is needed in chat.
-2. Open `wrangler.jsonc`. Give `name` a unique name (for example `tally-anna`). Create a fresh database with `npx wrangler d1 create tally-anna-db`.
-3. In `d1_databases`, keep `binding` exactly `DB`, replace `database_name` and `database_id` with the values just returned. Never reuse the reference database ID for a different person.
-4. Run `npx wrangler d1 migrations apply DB --remote` to create empty tables and default categories. These migrations do not contain personal data.
-5. Run `npx wrangler deploy`. Save the HTTPS `workers.dev` URL. Static assets and API are served by the same worker.
-6. Run `node scripts/bootstrap.mjs https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev`. This creates a random one-time owner setup key, stores only its hash as a Worker secret, and writes the private setup link into `Private/SETUP.md`. The raw key is not printed or published. Treat that file as private.
-7. Open the link in Safari, choose a password of at least 12 characters and save it in a password manager. There is no public signup. After the owner exists, the setup key cannot create another owner.
-8. Add the app to the Home Screen. In Settings → Upload keys, make a separate key for each shortcut. Follow Settings → Set up capture or [the complete guide](docs/SHORTCUTS.md).
+1. Clone or download this repo. Run `npm ci` and `npx wrangler login` to authenticate with your Cloudflare account.
+2. Open `wrangler.jsonc`. Create a fresh database with `npx wrangler d1 create tally-db`.
+3. In `d1_databases`, replace `database_id` with the ID just returned.
+4. Run `npx wrangler d1 migrations apply DB --remote` to create empty tables and default categories.
+5. Run `npx wrangler deploy`. Save the HTTPS `workers.dev` URL.
+6. Run `node scripts/bootstrap.mjs https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev`. This creates a random one-time owner setup key, stores only its hash as a Worker secret, and writes the private setup link into `Private/SETUP.md`.
+7. Open the link in Safari on your iPhone, set a password (min 12 characters), and tap Share → **Add to Home Screen**.
+8. In Settings → Upload keys, make an upload key for each shortcut. Follow Settings → Set up capture or [the illustrated guide](docs/SHORTCUTS.md) to set up Apple Pay or Touch 'n Go automations.
 9. Confirm a connection-only test appears in Skipped notifications without changing totals. Then inspect the next real purchase before relying on automatic capture.
 
 Workers' first deployment may ask you to create your free `workers.dev` subdomain. This is not a requirement to buy a domain. Do not enable a paid plan or enter payment details merely to run this app.

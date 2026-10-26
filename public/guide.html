@@ -48,11 +48,11 @@
 <p>  * <code>title</code>: Variable ➔ <code>Notification ➔ Title</code></p>
 <p>  * <code>body</code>: Variable ➔ <code>Notification ➔ Body</code></p>
 <p>* <strong>Smart Filter</strong>: Tally automatically extracts the merchant and amount from the text, while safely ignoring top-ups (Cash-In / GO+), promos, and refunds!</p>
-<h3>2. Bank Charge SMS</h3>
-<p>* <strong>Trigger</strong>: Automation ➔ ＋ ➔ Choose <strong>Message</strong> ➔ Set <strong>Message Contains: <code>charged</code></strong>.</p>
-<p>* <strong>Action</strong>: Add <strong>Get Contents of URL</strong> (POST) with JSON fields:</p>
-<p>  * <code>type</code>: <code>sms</code></p>
-<p>  * <code>text</code>: Variable ➔ <code>Shortcut Input</code> (the full message body).</p>
+<h3>2. Custom Notifications & Bank SMS (AI Agent Setup)</h3>
+<p>Tally's <code>/api/ingest</code> endpoint accepts any standard JSON payload. If you want to capture specific bank charge SMS or other financial apps beyond Apple Pay and TNG:</p>
+<p>Simply ask your AI agent (ChatGPT, Claude, etc.):</p>
+<div class="notice" style="border-left:4px solid #f5d000;background:#ffffff;padding:14px 18px;border-radius:8px;margin:20px 0;box-shadow:0 1px 3px rgba(0,0,0,0.05);">*"I use Tally for expense tracking. Here is a bank transaction SMS/notification format: <code><paste text></code>. How should I configure my iPhone Shortcut to POST this to <code>/api/ingest</code>?"*</div>
+<p>Your AI agent will give you the exact field mapping and regex trigger for your Shortcuts automation in seconds.</p>
 <hr style="border:0;border-top:1px solid #d5cfc5;margin:36px 0;">
 <h2>💡 Testing & Troubleshooting</h2>
 <div class="table"><table>
