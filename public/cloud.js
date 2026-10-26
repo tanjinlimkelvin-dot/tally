@@ -33,22 +33,101 @@ function skippedHTML(rows) {
 export function setupGuide() {
   const url=location.origin+'/api/ingest?format=text';
   return `<div class="month"><h2>Set up capture</h2><a class="link" href="#settings">Back</a></div>
-  <p class="guide-lead">Your phone sends a small event to your private ledger. No bank login. No Tailscale. No AI.</p>
-  <div class="guide-choice"><button class="chip" data-action="guide-scroll" data-target="wallet-guide">Apple Pay</button><button class="chip" data-action="guide-scroll" data-target="tng-guide">TNG</button><button class="chip" data-action="guide-scroll" data-target="sms-guide">Bank SMS</button></div>
-  <section class="guide-block"><h3>Before you start</h3><ol><li>In Safari, Share → <b>Add to Home Screen</b> for the app. Open it and sign in.</li><li>Go to <a href="#settings">Settings → Upload keys</a>. Create a key for this shortcut and save its <b>Bearer …</b> value in your password manager.</li><li>Open <b>Shortcuts</b> on your iPhone. Create a shortcut for one source below, then attach its automation. Labels and available triggers vary by iOS version.</li></ol><p class="callout">Variables are blue pills, not typed labels. Never paste “Amount” as the amount. Only field names, type values, URL and headers are literal text.</p></section>
-  <section class="guide-block"><h3>Every shortcut: shared upload steps</h3><ol><li>Add <b>Generate UUID</b>. Keep this event ID unchanged for any retry.</li><li>Add <b>Current Date</b>; format it as <b>ISO 8601</b>, including time and timezone.</li><li>Add <b>Get Contents of URL</b>: Method <b>POST</b>; Request Body <b>JSON</b>. Add the fields shown for your source below. Field names are text; changing values must be actual variables. The JSON mode handles quotes and newlines safely.</li><li>Add both headers below. For the request values, insert the same UUID and date outputs generated above. <b>This basic setup needs internet and does not automatically retry.</b></li><li>Advanced optional archive: before upload, save the same event (with the same ID) as one JSON line per event in a private per-source file. Dictionary-to-text compact JSON serialization still needs checking on your actual iPhone; do not rely on a pasted JSON template or an untested archive. See the full guide for this limitation.</li><li>Optional: add <b>If</b> Contents of URL <b>begins with</b> <code>Logged</code> → <b>Show Notification</b> Contents of URL → End If. This hides skipped/duplicate replies without filtering unrelated error text by one letter. Upload errors may still appear as Shortcuts errors.</li></ol>
-  <p>Upload URL</p>${copybox(url,'upload URL')}<p>Header name</p>${copybox('Authorization','Authorization header name')}<p>Header value: paste your full <b>Bearer …</b> key from Settings. Do not paste it into the URL.</p>${copybox('Content-Type','Content-Type header name')}${copybox('application/json','Content-Type value')}
-  <p class="note">Use the supported JSON request-body fields for initial setup. Test the received entry before relying on background capture. The illustrated guide explains each variable and the optional archive limitations.</p></section>
-  ${sourceGuide('wallet-guide','Apple Pay','applepay',[
-    ['event_id','Generate UUID output'],['type','applepay (literal)'],['at','Current Date, ISO 8601'],['amount','Transaction → Amount'],['merchant','Transaction → Merchant'],['name','Transaction → Name'],['card','Transaction → Card or Pass']
-  ],'Use a Wallet / Transaction automation: “When I tap a Wallet Card or Pass”. Select only payment cards; leave BYD/car keys and access passes unselected. Choose Run Immediately where available. New cards must be added to this selection later. In-app/online Apple Pay and Apple Watch taps may not trigger it. A bank may omit the amount — Tally will ask you to add it.')}
-  ${sourceGuide('tng-guide','TNG notifications','notification',[
-    ['event_id','Generate UUID output'],['type','notification (literal)'],['at','Current Date, ISO 8601'],['title','Notification trigger → Title'],['body','Notification trigger → Body']
-  ],'Only if your iOS version exposes a Notification automation trigger: select Touch ’n Go eWallet and pass its Title and Body. If the trigger is absent, this capture path is not available on that phone; use manual entry. Payments matching supported text are logged. Cash-in, refunds, rewards and ads are skipped, not used to reverse earlier expenses.')}
-  ${sourceGuide('sms-guide','Alliance bank SMS','sms',[
-    ['event_id','Generate UUID output'],['type','sms (literal)'],['at','Current Date, ISO 8601'],['text','Shortcut Input → message body']
-  ],'Create a Message automation with Message Contains “charged”, then run this shortcut and pass the Message as Shortcut Input. Do not type the phrase “Shortcut Input” into the Dictionary. Do not forward OTPs or every personal message. Alliance “charged for MYR … at …” texts are supported; this is not a universal parser for every bank. Other formats may be skipped.')}
-  <section class="guide-block"><h3>Check it works</h3><ol><li>Do a connection-only test: a fresh UUID, type <code>notification</code>, a current <code>at</code>, title <code>Tally setup test</code>, body <code>Connection test only — no purchase</code>. The reply should begin with <b>Skipped</b>; the ledger total must not change.</li><li>Check Settings → Last received and Skipped notifications. This proves the URL/key worked, not that the real phone trigger is wired correctly.</li><li>Wait for your next real payment. Check merchant, amount, date and category before relying on the automation.</li></ol><h3>If an upload fails</h3><p>The event stays in your phone archive only if you added the archive step. <b>It does not retry itself.</b> Open Settings → Recover shortcut archive and choose the .jsonl file. Tally uploads it in bounded batches; already-received IDs are safe to resend. Keep the archive until recovery completes. Split/rotate large files after verifying a successful import. Separate source files reduce simultaneous-write conflicts but do not guarantee conflict-free iCloud writes.</p><h3>Important limits</h3><p>Expenses only, MYR and Malaysia time. No bank balance sync. Foreign-currency taps need manual MYR confirmation. Refunds do not automatically cancel a previous purchase. iOS system automation banners are separate from Tally’s Show Notification action.</p><a class="btn ghost" href="/guide.html">Open full illustrated guide</a></section>`;
+  <p class="guide-lead">Automatically record expenses when you tap Apple Pay, receive Touch 'n Go notifications, or get bank SMS.</p>
+  
+  <div class="guide-choice">
+    <button class="chip" data-action="guide-scroll" data-target="wallet-guide">💳 Apple Pay (3 Steps)</button>
+    <button class="chip" data-action="guide-scroll" data-target="tng-guide">📱 Touch 'n Go</button>
+    <button class="chip" data-action="guide-scroll" data-target="sms-guide">💬 Bank SMS</button>
+  </div>
+
+  <section class="guide-block" id="wallet-guide">
+    <h3>⚡ Apple Pay 3-Step Setup</h3>
+    
+    <div class="panel group pad-note">
+      <h4>Step 1: Create Automation in Shortcuts</h4>
+      <img class="guide-img" src="/illustrations/step1-trigger.svg" alt="Step 1: Set up trigger" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line);margin:12px 0;">
+      <ol>
+        <li>Open <b>Shortcuts</b> app on iPhone → Tap <b>Automation</b> tab at bottom.</li>
+        <li>Tap <b>＋</b> in top right → Select <b>Transaction</b> (credit card icon).</li>
+        <li>Select your payment cards (untick car keys/passes) → Set <b>Run Immediately</b> → Tap Next → Choose <b>New Blank Automation</b>.</li>
+      </ol>
+    </div>
+
+    <div class="panel group pad-note" style="margin-top:20px;">
+      <h4>Step 2: Add Action — Get Contents of URL (POST)</h4>
+      <img class="guide-img" src="/illustrations/step2-variables.svg" alt="Step 2: Right vs Wrong variables" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line);margin:12px 0;">
+      <p class="callout" style="border-left:4px solid var(--yellow);background:var(--card);padding:10px 14px;border-radius:8px;font-size:14px;margin:12px 0;"><b>Crucial Tip:</b> Never manually type "Amount"! Tap the field and pick the <b>blue variable pill</b>: <code>Transaction ➔ Amount</code>.</p>
+      
+      <p><b>1. Copy your Ingest URL:</b></p>
+      ${copybox(url,'upload URL')}
+      
+      <p><b>2. Set Method to POST &amp; add Headers:</b></p>
+      ${copybox('Authorization','Authorization header name')}
+      <p class="note">Value: paste your <b>Bearer &lt;token&gt;</b> key from Settings (keep a space after Bearer).</p>
+      ${copybox('Content-Type','Content-Type header name')}
+      ${copybox('application/json','Content-Type value')}
+
+      <p><b>3. Set Request Body to JSON:</b></p>
+      <div class="field-spec">
+        <div><code>type</code><span><code>applepay</code> (typed text)</span></div>
+        <div><code>amount</code><span><b>Transaction ➔ Amount</b> (blue pill)</span></div>
+        <div><code>merchant</code><span><b>Transaction ➔ Merchant</b> (blue pill)</span></div>
+      </div>
+    </div>
+
+    <div class="panel group pad-note" style="margin-top:20px;">
+      <h4>Step 3: Add Action — Show Notification</h4>
+      <img class="guide-img" src="/illustrations/step3-post-json.svg" alt="Step 3: Actions setup" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line);margin:12px 0;">
+      <ol>
+        <li>Search &amp; add <b>Show Notification</b> action.</li>
+        <li>Set its message to <b>Contents of URL</b> (as Text).</li>
+        <li>Done! Every tap pops up an instant confirmation banner: <code>Logged RM 12.50 · Tealive</code>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="guide-block" id="tng-guide">
+    <h3>📱 Touch 'n Go eWallet (Notifications)</h3>
+    <div class="panel group pad-note">
+      <p>If your iOS version supports the <b>App / Notification</b> trigger:</p>
+      <ol>
+        <li>Create Automation → Choose <b>App / Notification</b> → Select <b>Touch 'n Go eWallet</b>.</li>
+        <li>Add <b>Get Contents of URL</b> (POST) with the same URL &amp; Headers.</li>
+        <li>JSON Fields:
+          <div class="field-spec">
+            <div><code>type</code><span><code>notification</code></span></div>
+            <div><code>title</code><span><b>Notification ➔ Title</b> (variable)</span></div>
+            <div><code>body</code><span><b>Notification ➔ Body</b> (variable)</span></div>
+          </div>
+        </li>
+      </ol>
+      <p class="note">Tally automatically extracts the merchant &amp; amount, and filters out top-ups (Cash-In) and ads.</p>
+    </div>
+  </section>
+
+  <section class="guide-block" id="sms-guide">
+    <h3>💬 Bank Charge SMS</h3>
+    <div class="panel group pad-note">
+      <ol>
+        <li>Create Automation → Choose <b>Message</b> → Set <b>Message Contains: charged</b>.</li>
+        <li>Add <b>Get Contents of URL</b> (POST) with the same URL &amp; Headers.</li>
+        <li>JSON Fields:
+          <div class="field-spec">
+            <div><code>type</code><span><code>sms</code></span></div>
+            <div><code>text</code><span><b>Shortcut Input</b> (message text)</span></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="guide-block">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+      <a class="btn primary" href="/guide.html" target="_blank">Open Full Visual Guide Page ↗</a>
+      <a class="link" href="#settings">Back to Settings</a>
+    </div>
+  </section>`;
 }
 function sourceGuide(id,title,type,fields,text) {
   return `<section class="guide-block" id="${id}"><h3>${title}</h3><p>${text}</p><div class="field-spec">${fields.map(([k,v])=>`<div><code>${k}</code><span>${esc(v)}</span></div>`).join('')}</div><p class="note">Keep type exactly <code>${type}</code>. Create the dictionary once per event, before both archive and upload.</p></section>`;

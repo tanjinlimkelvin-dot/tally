@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="540" viewBox="0 0 900 540" role="img" aria-labelledby="s3-title s3-desc">
+  <title id="s3-title">Step 3: Add the Two Actions in iOS Shortcuts</title>
+  <desc id="s3-desc">Visual mockup showing the 2 actions: Get Contents of URL (POST JSON) and Show Notification.</desc>
+  <rect width="900" height="540" fill="#f4f1eb" rx="16"/>
+  <rect x="2" y="2" width="896" height="536" fill="none" stroke="#e0dbd1" stroke-width="2" rx="14"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif">
+    <!-- Header -->
+    <text x="36" y="46" font-size="22" font-weight="700" fill="#1d1c19">Step 3: Add Actions — Just 2 Simple Blocks to Complete Setup!</text>
+    <text x="36" y="74" font-size="14" fill="#68645e">Action 1: Get Contents of URL (POST JSON) → Action 2: Show Notification</text>
+
+    <!-- Action 1: Get Contents of URL -->
+    <g transform="translate(36, 96)">
+      <rect width="828" height="290" rx="14" fill="#ffffff" stroke="#0071e3" stroke-width="2"/>
+      
+      <!-- Action Header -->
+      <path d="M 0 14 C 0 6 6 0 14 0 L 814 0 C 822 0 828 6 828 14 L 828 44 L 0 44 Z" fill="#eff6ff"/>
+      <rect x="16" y="10" width="24" height="24" rx="6" fill="#0071e3"/>
+      <text x="23" y="27" font-size="14" font-weight="700" fill="#ffffff">🌐</text>
+      <text x="50" y="27" font-size="16" font-weight="700" fill="#0071e3">Action 1: Get Contents of URL</text>
+      <text x="660" y="27" font-size="13" font-weight="600" fill="#3b82f6">Tap "Show More" ▼</text>
+
+      <!-- URL Row -->
+      <g transform="translate(20, 58)">
+        <text x="0" y="20" font-size="14" font-weight="600" fill="#4a443d">URL:</text>
+        <rect x="50" y="0" width="738" height="32" rx="6" fill="#f9f8f6" stroke="#d5cfc5"/>
+        <text x="62" y="21" font-size="13" font-family="monospace" fill="#0369a1">https://&lt;your-app&gt;.workers.dev/api/ingest?format=text</text>
+      </g>
+
+      <!-- Method & Headers Grid -->
+      <g transform="translate(20, 102)">
+        <text x="0" y="20" font-size="14" font-weight="600" fill="#4a443d">Method:</text>
+        <rect x="70" y="0" width="80" height="30" rx="6" fill="#f5d000"/>
+        <text x="92" y="20" font-size="14" font-weight="700" fill="#1d1c19">POST</text>
+
+        <text x="180" y="20" font-size="14" font-weight="600" fill="#4a443d">Headers:</text>
+        <rect x="250" y="-4" width="538" height="52" rx="6" fill="#f9f8f6" stroke="#d5cfc5"/>
+        <text x="262" y="16" font-size="12" font-family="monospace" fill="#1d1c19">Authorization: Bearer &lt;Your upload key from Settings&gt;</text>
+        <text x="262" y="36" font-size="12" font-family="monospace" fill="#1d1c19">Content-Type: application/json</text>
+      </g>
+
+      <!-- JSON Body -->
+      <g transform="translate(20, 168)">
+        <text x="0" y="20" font-size="14" font-weight="600" fill="#4a443d">Request Body:</text>
+        <rect x="110" y="2" width="60" height="26" rx="4" fill="#e2ded6"/>
+        <text x="122" y="19" font-size="12" font-weight="700" fill="#1d1c19">JSON</text>
+
+        <rect x="180" y="0" width="608" height="106" rx="8" fill="#fcfbf9" stroke="#e0dbd1"/>
+        
+        <!-- Field 1 -->
+        <text x="196" y="26" font-size="13" font-family="monospace" fill="#68645e">type</text>
+        <text x="270" y="26" font-size="13" font-family="monospace" font-weight="600" fill="#1d1c19">applepay</text>
+        <text x="380" y="26" font-size="12" fill="#8c877e">(Text field, type literal word)</text>
+
+        <line x1="180" y1="36" x2="788" y2="36" stroke="#f0ece4"/>
+
+        <!-- Field 2 -->
+        <text x="196" y="58" font-size="13" font-family="monospace" fill="#68645e">amount</text>
+        <rect x="266" y="42" width="190" height="24" rx="12" fill="#e0f2fe" stroke="#38bdf8"/>
+        <text x="280" y="58" font-size="12" font-weight="700" fill="#0369a1">Transaction ➔ Amount</text>
+        <text x="475" y="58" font-size="12" fill="#2e7d32" font-weight="600">✓ Select variable pill</text>
+
+        <line x1="180" y1="72" x2="788" y2="72" stroke="#f0ece4"/>
+
+        <!-- Field 3 -->
+        <text x="196" y="94" font-size="13" font-family="monospace" fill="#68645e">merchant</text>
+        <rect x="266" y="78" width="190" height="24" rx="12" fill="#e0f2fe" stroke="#38bdf8"/>
+        <text x="280" y="94" font-size="12" font-weight="700" fill="#0369a1">Transaction ➔ Merchant</text>
+        <text x="475" y="94" font-size="12" fill="#2e7d32" font-weight="600">✓ Select variable pill</text>
+      </g>
+    </g>
+
+    <!-- Connector Arrow -->
+    <g transform="translate(435, 394)">
+      <line x1="15" y1="0" x2="15" y2="16" stroke="#0071e3" stroke-width="3"/>
+      <polygon points="9,16 21,16 15,24" fill="#0071e3"/>
+    </g>
+
+    <!-- Action 2: Show Notification -->
+    <g transform="translate(36, 426)">
+      <rect width="828" height="88" rx="14" fill="#ffffff" stroke="#2e7d32" stroke-width="2"/>
+      
+      <rect x="18" y="16" width="28" height="28" rx="6" fill="#2e7d32"/>
+      <text x="23" y="35" font-size="16">🔔</text>
+      <text x="58" y="35" font-size="16" font-weight="700" fill="#1b5e20">Action 2: Show Notification</text>
+      
+      <rect x="320" y="18" width="180" height="28" rx="14" fill="#e8f5e9" stroke="#81c784"/>
+      <text x="336" y="36" font-size="13" font-weight="700" fill="#2e7d32">Contents of URL (Text)</text>
+
+      <text x="58" y="66" font-size="13" fill="#4a443d">
+        Every time you tap Apple Pay, a quiet banner pops up:
+        <tspan font-family="monospace" font-weight="bold" fill="#0369a1">"Logged RM 12.50 · Tealive"</tspan> — confirming your expense is logged!
+      </text>
+    </g>
+  </g>
+</svg>

@@ -19,6 +19,10 @@ test('learn category, human reply, telemetry, ignored passes do not suppress pai
     assert.equal((await request(`/api/entries/${e.id}/not-payment`,'POST',{version:e.version})).status,200);
     const pay=await request('/api/ingest','POST',{event_id:crypto.randomUUID(),type:'applepay',merchant:'My key',amount:'12.50',at:'2026-10-25T12:02:00+08:00'});
     assert.equal(pay.data.accepted,1);
+    // Beginner-friendly payload: no event_id, no at
+    const beginnerPay=await request('/api/ingest','POST',{type:'applepay',merchant:'Kopi Station',amount:'6.50'});
+    assert.equal(beginnerPay.data.accepted,1);
+    assert.match(beginnerPay.data.message,/^Logged RM ?6\.50/);
     const skip=await request('/api/ingest','POST',{event_id:crypto.randomUUID(),type:'notification',title:'Cash In Successful',body:'RM23.99 to GO+',at:'2026-10-25T12:03:00+08:00'});
     assert.match(skip.data.message,/^Skipped/);
     const dup=await request('/api/ingest','POST',{event_id:id,type:'notification',body:'You have paid RM 8.90 to Tealive.'});assert.match(dup.data.message,/^Synced/);

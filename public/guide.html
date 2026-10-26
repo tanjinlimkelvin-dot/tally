@@ -1,118 +1,65 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tally Cloud — iPhone setup</title><link rel="stylesheet" href="/guide.css"><link rel="icon" href="/favicon.png"><main><a href="/#setup">← Back to app setup</a><p class="notice">Manual setup · English guide · No secrets · Direct upload is not automatic offline retry</p><h1>Tally Cloud · iPhone capture setup</h1>
-<p>This is a manual setup guide for one owner&#x27;s Tally Cloud deployment. No AI, MiniPC, or Tailscale is involved. You need your deployed HTTPS app, an iPhone with Shortcuts, and an upload-only token generated in <strong>App Settings</strong>. Never use an administrator credential in a shortcut.</p>
-<p><strong>Read the illustrated companion:</strong> <a href="#illustrations">guides/index.html</a>. All illustrations are authored diagrams, not OS screenshots. Labels and trigger availability can differ by iOS version.</p>
-<h2>1. Understand what you are building</h2>
-<p>A <strong>shortcut</strong> is a sequence of actions: collect fields → send JSON → display reply. An <strong>automation</strong> is the trigger that runs those actions, such as a Wallet transaction or an incoming message. Importing or creating a shortcut does not install its personal automation. You must select the trigger yourself on the iPhone.</p>
-<p>Start in <strong>Shortcuts → Automation → +</strong> and look for the relevant trigger. On versions that expose automation creation inside the shortcut editor, use that equivalent entry point. Pick automatic/immediate execution only if your version offers it and you understand what it permits. Approve network and file permissions during setup; a permission prompt can interrupt unattended capture.</p>
-<p>Build one source at a time. Do not add an AI/model action, amount filter, or guessed text parser before upload: failures there can discard the raw event.</p>
-<h2>2. Get the two private setup values</h2>
-<p>1. Open your own Tally Cloud app and sign in.</p>
-<p>2. In <strong>Settings</strong>, generate an <strong>upload-only token</strong>. Store it privately; anyone holding it may submit events to this deployment. It is not a read/admin login.</p>
-<p>3. Use the app&#x27;s current origin, not a URL from a screenshot. For example, replace the example origin below with the actual HTTPS address in your address bar:</p>
-<p>   <code>https://YOUR-APP.example/api/ingest?format=text</code></p>
-<p>4. Do not include the token in the URL, a shared shortcut link, source control, a screenshot, an archive, or a support message. If exposed, revoke it and generate another in Settings; update each source shortcut.</p>
-<h2>3. Magic variables are not pasted words</h2><p>Swipe diagrams horizontally, or open full size: <a href="/illustrations/variables.svg">Variable pills</a> · <a href="/illustrations/post-json.svg">POST settings</a>.</p><section id="illustrations" aria-label="Setup illustrations"><figure><svg xmlns="http://www.w3.org/2000/svg" width="900" height="440" viewBox="0 0 900 440" role="img" aria-labelledby="t d"><title id="t">Wrong typed words versus real variables</title><desc id="d">Authored diagram, not an OS screenshot. Insert Transaction Amount using the variable picker instead of typing Amount.</desc><rect width="900" height="440" fill="#f2f0e9"/><g font-family="Arial,sans-serif" fill="#202423"><text x="30" y="42" font-size="25" font-weight="bold">Values that change must be variable pills</text><text x="30" y="72" font-size="16">AUTHORED DIAGRAM · NOT AN OS SCREENSHOT</text><rect x="30" y="104" width="400" height="206" rx="16" fill="white" stroke="#b34343" stroke-width="3"/><rect x="470" y="104" width="400" height="206" rx="16" fill="white" stroke="#267251" stroke-width="3"/><text x="52" y="142" font-size="22" fill="#a82f2f">WRONG · pasted label</text><text x="492" y="142" font-size="22" fill="#267251">RIGHT · inserted variable</text><text x="52" y="196" font-size="19">amount</text><text x="205" y="196" font-size="19">Amount</text><text x="492" y="196" font-size="19">amount</text><rect x="602" y="168" width="245" height="43" rx="18" fill="#deedff"/><text x="615" y="195" font-size="18" fill="#175da8" font-weight="bold">Transaction → Amount</text><text x="52" y="251" font-size="17">Sends the word “Amount”.</text><text x="492" y="251" font-size="17">Reads this transaction's amount.</text><text x="30" y="351" font-size="19">Tap value → Select Variable → Transaction → choose Amount</text><text x="30" y="385" font-size="17">Also insert UUID, formatted date, Title, Body, and message input as variables.</text><text x="30" y="414" font-size="16">Type keys and fixed source names. Never paste variable labels as live values.</text></g></svg><figcaption>Authored explanatory diagram, not an actual iOS screenshot. Open the SVG to zoom.</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" width="900" height="610" viewBox="0 0 900 610" role="img" aria-labelledby="t d"><title id="t">POST JSON setup schema</title><desc id="d">Authored diagram, not an OS screenshot. POST to your origin's ingest endpoint with bearer authorization and JSON content type. Blue pills represent action outputs.</desc><rect width="900" height="610" fill="#f2f0e9"/><g font-family="Arial,sans-serif" fill="#202423"><text x="30" y="42" font-size="26" font-weight="bold">Get Contents of URL · POST</text><text x="30" y="73" font-size="16">AUTHORED DIAGRAM · NOT AN OS SCREENSHOT · NO REAL TOKEN</text><rect x="25" y="95" width="850" height="425" rx="18" fill="white"/><g font-size="19"><text x="45" y="132">URL: https://YOUR-APP.example/api/ingest?format=text</text><text x="45" y="175">Authorization</text><text x="270" y="175">Bearer &lt;your private upload-only token&gt;</text><text x="45" y="216">Content-Type</text><text x="270" y="216">application/json</text><text x="45" y="263" font-weight="bold">Request Body: JSON · add fields, not a pasted text template</text><text x="45" y="308">event_id</text><text x="45" y="353">at</text><text x="45" y="398">type</text><text x="270" y="398">sms</text><text x="45" y="443">text</text></g><g fill="#deedff"><rect x="265" y="280" width="220" height="40" rx="16"/><rect x="265" y="326" width="290" height="40" rx="16"/><rect x="265" y="416" width="370" height="40" rx="16"/></g><g fill="#175da8" font-size="19" font-weight="bold"><text x="280" y="307">Generate UUID output</text><text x="280" y="353">Format Date → ISO 8601</text><text x="280" y="443">Shortcut Input → message body</text></g><text x="45" y="491" font-size="17">Wallet: type = applepay · Notification: type = notification</text><text x="30" y="554" font-size="19">Then: Show Notification → Contents of URL (Text)</text><text x="30" y="588" font-size="17">A failed POST is not an automatic retry. Preserve the original event ID for recovery.</text></g></svg><figcaption>Authored explanatory diagram, not an actual iOS screenshot. Open the SVG to zoom.</figcaption></figure></section>
-<p><strong>Keys</strong> (<code>amount</code>, <code>merchant</code>, <code>event_id</code>) and fixed values (<code>applepay</code>) are typed text. <strong>Values that change</strong> must be inserted using the variable picker. Typing <code>Amount</code>, <code>[Amount]</code>, or <code>Transaction Amount</code> does not read a payment amount.</p>
-<p>Tap a value field → select a variable / Magic Variable → select <strong>Transaction</strong> → tap that variable and choose its <strong>Amount</strong> property. Repeat for Merchant, Name, and Card if those properties are exposed by your trigger. A genuine variable is a colored pill, not ordinary text. The diagrams use blue pills schematically; actual appearance varies.</p>
-<p>For ID and date, insert the output of <strong>Generate UUID</strong> and <strong>Format Date</strong>, not their action names as text. A manually run Wallet shortcut normally has no Transaction input. Empty values on a manual run do not prove that the real trigger works.</p>
-<h2>4. Common sending actions: supported JSON route</h2>
-<p>Use <strong>Get Contents of URL → POST → Request Body: JSON</strong>. Apple documents JSON body fields with manually entered values or variables. This avoids hand-built JSON strings and correctly escapes quotes and newlines in SMS bodies.</p>
-<p>1. Add <strong>Generate UUID</strong> once per captured event. Keep its output for every send/recovery attempt of that same event.</p>
-<p>2. Add <strong>Current Date</strong>, then <strong>Format Date</strong>. Choose ISO 8601 if available; otherwise a custom ISO representation with a timezone, for example <code>yyyy-MM-dd&#x27;T&#x27;HH:mm:ssXXX</code>. Preview it: it must resemble <code>2026-01-01T12:00:00+08:00</code>, not a localized sentence. This is capture time, not necessarily the bank&#x27;s original charge time.</p>
-<p>3. Add <strong>Get Contents of URL</strong>, using your own full ingest URL. Expand its options, set Method to <strong>POST</strong>, and add these headers:</p>
-<p>   | Header name (literal) | Header value |</p>
-<p>   |---|---|</p>
-<p>   | <code>Authorization</code> | <code>Bearer </code> followed by your private upload-only token; keep the space |</p>
-<p>   | <code>Content-Type</code> | <code>application/json</code> |</p>
-<p>4. Choose <strong>Request Body: JSON</strong>. Add the fields below as named JSON fields. Insert the indicated variables. Do not paste the whole table as a text body.</p>
-<p>5. Add <strong>Show Notification</strong> containing only the <strong>Contents of URL</strong> result. If its variable is typed as File or shows a filename, tap it and choose <strong>Text</strong>. Keep errors visible until setup is verified. A notification saying the shortcut ran is not proof that the server stored an event.</p>
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tally Cloud — iPhone 自动化快捷指令指南</title><link rel="stylesheet" href="/guide.css"><link rel="icon" href="/favicon.png"><main><a href="/#setup" style="display:inline-block;margin-bottom:16px;font-weight:600;">← 返回 Tally 设置</a><h1>Tally Cloud · iPhone Shortcuts Setup Guide</h1>
+<div class="notice" style="border-left:4px solid #f5d000;background:#ffffff;padding:14px 18px;border-radius:8px;margin:20px 0;box-shadow:0 1px 3px rgba(0,0,0,0.05);"><strong>Effortless 3-Step Expense Capture</strong>: Use iOS Shortcuts automation to automatically log your Apple Pay taps, Touch 'n Go notifications, or bank SMS messages directly into your private Tally ledger. No need to open the app — transactions are recorded in seconds with an instant confirmation banner.</div>
+<hr style="border:0;border-top:1px solid #d5cfc5;margin:36px 0;">
+<h2>⚡ Core 3-Step Setup (Apple Pay Example)</h2>
+<h3>Step 1: Create an Apple Pay Automation Trigger</h3>
+<figure style="margin:20px 0;"><img src="/illustrations/step1-trigger.svg" alt="Step 1: Create an Automation" style="width:100%;height:auto;border-radius:12px;border:1px solid #d5cfc5;display:block;"/><figcaption style="text-align:center;font-size:13px;color:#68645e;margin-top:6px;">Step 1: Create an Automation</figcaption></figure>
+<p>1. Open the built-in <strong>Shortcuts</strong> app on your iPhone.</p>
+<p>2. Tap the <strong>Automation</strong> tab in the bottom navigation bar.</p>
+<p>3. Tap <strong>＋</strong> in the top right corner, then select <strong>Transaction</strong> (the credit card icon).</p>
+<p>4. <strong>Key Configuration</strong>:</p>
+<p>   - <strong>Card or Pass</strong>: Select your payment debit / credit cards. (⚠️ <strong>Make sure to untick digital car keys and access passes</strong>).</p>
+<p>   - <strong>Execution</strong>: Choose <strong>Run Immediately</strong>. Turn off "Ask Before Running".</p>
+<p>5. Tap <strong>Next</strong>, then choose <strong>New Blank Automation</strong>.</p>
+<hr style="border:0;border-top:1px solid #d5cfc5;margin:36px 0;">
+<h3>Step 2: Crucial Rule — Insert Variable Pills, Don't Type Text!</h3>
+<figure style="margin:20px 0;"><img src="/illustrations/step2-variables.svg" alt="Step 2: Right vs Wrong Variables" style="width:100%;height:auto;border-radius:12px;border:1px solid #d5cfc5;display:block;"/><figcaption style="text-align:center;font-size:13px;color:#68645e;margin-top:6px;">Step 2: Right vs Wrong Variables</figcaption></figure>
+<p>This is the #1 beginner mistake when setting up Shortcuts:</p>
+<p>* ❌ <strong>WRONG</strong>: Typing the letters <code>Amount</code> on your keyboard. The server receives the English word "Amount", not your transaction number!</p>
+<p>* ✅ <strong>RIGHT</strong>: Tap the value field, tap the blue <strong>Select Variable</strong> bar above your keyboard, and choose <strong><code>Transaction ➔ Amount</code></strong>. Only values displayed in a <strong>blue capsule pill</strong> will dynamically read the real charge amount on each tap.</p>
+<hr style="border:0;border-top:1px solid #d5cfc5;margin:36px 0;">
+<h3>Step 3: Add Actions (Only 2 Simple Blocks!)</h3>
+<figure style="margin:20px 0;"><img src="/illustrations/step3-post-json.svg" alt="Step 3: Action Setup" style="width:100%;height:auto;border-radius:12px;border:1px solid #d5cfc5;display:block;"/><figcaption style="text-align:center;font-size:13px;color:#68645e;margin-top:6px;">Step 3: Action Setup</figcaption></figure>
+<p>In the automation editor, tap <strong>Add Action</strong> and add these two steps:</p>
+<p>#### Action 1: Get Contents of URL</p>
+<p>Search for <strong>Get Contents of URL</strong>, tap the blue arrow to expand its options:</p>
+<p>* <strong>URL</strong>: Paste your ingest address (copy it with one click from Tally Settings):  </p>
+<p>  <code>https://<your-subdomain>.workers.dev/api/ingest?format=text</code></p>
+<p>* <strong>Method</strong>: Change from <code>GET</code> to <strong><code>POST</code></strong>.</p>
+<p>* <strong>Headers</strong>: Add two rows:</p>
+<p>  * <code>Authorization</code>: <code>Bearer <Your_Upload_Key></code> (generated in Tally Settings; keep a space after <code>Bearer</code>)</p>
+<p>  * <code>Content-Type</code>: <code>application/json</code></p>
+<p>* <strong>Request Body</strong>: Choose <strong>JSON</strong>, then tap <strong>Add new field</strong> to add:</p>
+<p>  * <code>type</code> (Text): Type <code>applepay</code></p>
+<p>  * <code>amount</code> (Variable): Select variable ➔ <strong><code>Transaction ➔ Amount</code></strong> (Blue Pill)</p>
+<p>  * <code>merchant</code> (Variable): Select variable ➔ <strong><code>Transaction ➔ Merchant</code></strong> (Blue Pill)</p>
+<p>#### Action 2: Show Notification</p>
+<p>Search for and add <strong>Show Notification</strong>:</p>
+<p>* Set the notification text to the <strong><code>Contents of URL</code></strong> variable.</p>
+<p>* <strong>Result</strong>: Every time you tap to pay, your iPhone instantly displays a banner:  </p>
+<p>  <code>Logged RM 12.50 · Tealive</code> — confirming your expense has been cleanly recorded!</p>
+<hr style="border:0;border-top:1px solid #d5cfc5;margin:36px 0;">
+<h2>📱 Other Automation Sources (Optional)</h2>
+<h3>1. Touch 'n Go eWallet (TNG Notifications)</h3>
+<p>If your iOS version supports the <strong>App / Notification</strong> trigger:</p>
+<p>* <strong>Trigger</strong>: Automation ➔ ＋ ➔ Choose <strong>App / Notification</strong> ➔ Select <strong>Touch 'n Go eWallet</strong>.</p>
+<p>* <strong>Action</strong>: Add <strong>Get Contents of URL</strong> (POST) with JSON fields:</p>
+<p>  * <code>type</code>: <code>notification</code></p>
+<p>  * <code>title</code>: Variable ➔ <code>Notification ➔ Title</code></p>
+<p>  * <code>body</code>: Variable ➔ <code>Notification ➔ Body</code></p>
+<p>* <strong>Smart Filter</strong>: Tally automatically extracts the merchant and amount from the text, while safely ignoring top-ups (Cash-In / GO+), promos, and refunds!</p>
+<h3>2. Bank Charge SMS</h3>
+<p>* <strong>Trigger</strong>: Automation ➔ ＋ ➔ Choose <strong>Message</strong> ➔ Set <strong>Message Contains: <code>charged</code></strong>.</p>
+<p>* <strong>Action</strong>: Add <strong>Get Contents of URL</strong> (POST) with JSON fields:</p>
+<p>  * <code>type</code>: <code>sms</code></p>
+<p>  * <code>text</code>: Variable ➔ <code>Shortcut Input</code> (the full message body).</p>
+<hr style="border:0;border-top:1px solid #d5cfc5;margin:36px 0;">
+<h2>💡 Testing & Troubleshooting</h2>
 <div class="table"><table>
-<tr><td>JSON key</td><td>Field value</td><td>Source</td></tr>
-<tr><td><code>event_id</code></td><td>Generate UUID output</td><td>Every source; stable for retries</td></tr>
-<tr><td><code>type</code></td><td><code>applepay</code>, <code>notification</code>, or <code>sms</code></td><td>Fixed literal for this shortcut</td></tr>
-<tr><td><code>at</code></td><td>Formatted date output</td><td>Every source</td></tr>
-<tr><td><code>amount</code></td><td>Transaction → Amount</td><td>Wallet; leave out if unavailable</td></tr>
-<tr><td><code>merchant</code></td><td>Transaction → Merchant</td><td>Wallet; leave out if unavailable</td></tr>
-<tr><td><code>name</code></td><td>Transaction → Name</td><td>Wallet; leave out if unavailable</td></tr>
-<tr><td><code>card</code></td><td>Transaction → Card</td><td>Wallet; leave out if unavailable</td></tr>
-<tr><td><code>title</code></td><td>Trigger → Title</td><td>Notification, only if exposed</td></tr>
-<tr><td><code>body</code></td><td>Trigger → Body</td><td>Notification, only if exposed</td></tr>
-<tr><td><code>text</code></td><td>Shortcut Input → message body</td><td>SMS</td></tr>
-</table></div>
-<p>Use a Number field for a numeric amount if available; do not invent zero for a missing amount. Do not send literal property labels for missing fields. The enum values are lowercase and exact. <code>?format=text</code> requests a readable reply; it does <strong>not</strong> change the JSON request body to plain text. This guide deliberately does not prescribe <code>/api/quick</code>: its separate JSON contract must be confirmed first.</p>
-<h2>5. Apple Pay / Wallet</h2>
-<p>1. Create a Wallet / Transaction automation where your iOS version offers it.</p>
-<p>2. In <strong>Card or Pass</strong>, select your actual payment cards individually, <strong>not Any</strong>. Exclude car keys, door/access passes, and other non-payment passes. A key tap is not spending.</p>
-<p>3. <strong>New cards are not automatically included:</strong> when you add a future card to Wallet, edit this selection and explicitly tick it.</p>
-<p>4. Add the common actions above with <code>type</code> = <code>applepay</code>. Map Amount, Merchant, Name, and Card from the actual Transaction variable. If you use a separate reusable shortcut, explicitly pass Transaction into it; a shortcut with no input cannot read the automation&#x27;s transaction by magic.</p>
-<p>5. Enable the automation and verify the selected cards. A manual ▶ run can check permissions but cannot synthesize a real Wallet transaction.</p>
-<p>Some versions expose an additional Wallet notification/Notify setting. Use only settings visible on your phone; this guide does not promise that every automation banner can be suppressed.</p>
-<h2>6. Touch &#x27;n Go eWallet (TNG): only when supported</h2>
-<p>An ordinary app/PWA cannot read all iPhone notifications. First inspect the available automation triggers. <strong>Only proceed if your installed iOS provides an app-notification trigger and exposes the notification Title and Body.</strong> Do not assume a particular iOS version guarantees it.</p>
-<p>1. Choose that notification trigger and select <strong>Touch &#x27;n Go eWallet</strong>, not all apps.</p>
-<p>2. Set <code>type</code> to <code>notification</code>; map <code>title</code> to the real trigger Title and <code>body</code> to the real Body.</p>
-<p>3. Do not type <code>Title</code> or <code>Body</code> as values. Keep the full raw payment body, including punctuation.</p>
-<p>4. If no such trigger or no body variable exists, automatic TNG notification capture is unavailable on this phone. Record spending manually in Tally; do not substitute an unrelated trigger or claim background capture works.</p>
-<p>The reference lesson includes the supported example shape <code>You have paid RM 8.90 to Tealive.</code> This describes a parser example, not a guarantee that every TNG notification variant parses. Transfers, top-ups, marketing notices, reversals, and income are not automatically spending. Review uncertain events; do not manufacture an amount.</p>
-<h2>7. Alliance Bank SMS</h2>
-<p>1. Create a <strong>Message</strong> automation. Use <strong>Message contains</strong> with a narrowly useful keyword such as <code>charged</code>, rather than relying on a bank short-code being in Contacts. This may also match an ordinary chat; the server still needs to recognize the bank charge shape.</p>
-<p>2. Set <code>type</code> to <code>sms</code> and <code>text</code> to <strong>Shortcut Input</strong>, selecting the message body/Text property if needed. Preserve the entire message.</p>
-<p>3. If selecting Shortcut Input adds a receive-input block, inspect its input type; it is not itself a second trigger.</p>
-<p>4. Reuse the POST and header settings. Do not copy the token to a message or online JSON editor.</p>
-<p><strong>Known reference format family:</strong> AllianceBank charge messages containing <code>charged for MYR &lt;amount&gt; at &lt;merchant&gt; on &lt;DDMMYY&gt;@&lt;HH:MM&gt;</code>. A synthetic example is:</p>
-<pre><code>RM0 AllianceBank: Virtual Credit Card charged for MYR 1.00 at TEST SHOP on 010126@12:00. Call bank if not authorised.</code></pre>
-<p>The example is invented and contains no real financial data. Other wording, bank names, debit/reversal messages, and unknown banks must be treated as <strong>unverified/needs review</strong>, not silently assigned a merchant or trusted amount. This guide does not certify parser coverage in the current backend. Never broaden capture to OTPs or send verification codes to Tally. Sender labels are not proof that a message is genuine.</p>
-<p>One purchase may produce both Wallet and SMS events. Stable <code>event_id</code> deduplicates retries of the <strong>same event</strong>, not necessarily two independently triggered sources. Check for cross-source duplicates and do not promise automatic reconciliation without backend tests.</p>
-<h2>8. Safe tests: no real charge needed</h2>
-<p>Use a separate temporary manual shortcut or a manual <strong>Dictionary</strong> fixture to supply synthetic values to the same JSON body fields. Do not attempt a real purchase just to test connectivity. The fixture should use a fresh Generate UUID, the current formatted date, <code>type: sms</code>, and the synthetic Alliance text above; a notification fixture can use title <code>TEST ONLY</code> and the example TNG body. A Dictionary is a convenient fixture source, not a verified archive serializer.</p>
-<p><strong>Warning: there is no documented dry-run flag in this contract.</strong> A valid synthetic payment can create a real ledger row. Prefer a disposable deployment. If you test your live deployment, explicitly expect the disposable <code>TEST SHOP</code> / test entry, inspect it, and delete it in the app afterward. Do not call the test harmless or assume ▶ is a dry run.</p>
-<p>Check all of these:</p>
-<p>- The server returns an intelligible reply, not an HTML login page.</p>
-<p>- Tally shows the expected test event or a clear needs-review/error outcome; inspect source, amount, merchant, card, and timestamp.</p>
-<p>- A literal variable-name mistake does not become a normal purchase.</p>
-<p>- Retrying the <strong>exact same event ID and payload</strong> does not create a second entry. Running Generate UUID again is a new event, not a retry.</p>
-<p>- Unknown bank text is flagged/not interpreted as a confirmed expense.</p>
-<p>- Remove disposable test entries. Retain acknowledged IDs according to the backend&#x27;s dedupe/tombstone policy; replaying an archive after deleting a test must not be assumed safe without testing.</p>
-<p>These are acceptance checks, not claims that they have been exercised on your iPhone or deployment.</p>
-<h2>9. Offline truth and <code>.jsonl</code> recovery</h2>
-<p><strong>The basic direct POST does not automatically retry.</strong> A failed Get Contents of URL may stop execution before a notification. No internet means no confirmed upload; iOS does not create a reliable retry queue for this guide.</p>
-<p>For durable capture, a correctly tested archive step must happen <strong>before</strong> the network call:</p>
-<p>1. Create one event Dictionary, including one UUID and capture timestamp.</p>
-<p>2. Serialize that exact event as <strong>compact, single-line JSON</strong>; embedded newlines must be escaped as <code>\n</code>. Append one newline after the JSON object.</p>
-<p>3. Append to a private per-source file such as <code>tally-applepay.jsonl</code>, <code>tally-notification.jsonl</code>, or <code>tally-sms.jsonl</code> in one explicitly selected folder. Confirm the file exists and can be read offline. iCloud-only files may be unavailable offline.</p>
-<p>4. POST the same event using the same ID and original fields. Do not generate another ID for recovery.</p>
-<p><strong>Serialization caveat:</strong> Apple&#x27;s dictionary documentation says Dictionary can create JSON and its results can be copied, but the official sources checked here do not establish that <strong>Get Text from Input → Dictionary</strong> always produces compact one-line JSON on every target iOS version. Pretty-printed JSON is not JSONL. Therefore this guide does <strong>not</strong> present that action sequence as a verified, beginner-ready archive recipe. Do not hand-concatenate unescaped message text into JSON. Until a helper is device-tested, use the direct JSON-body setup knowing its offline limitation, and keep the original SMS/notification information for manual recovery where available.</p>
-<p>A helper shortcut, if later supplied, must be explicitly tested for quotes, backslashes, multiline text, Unicode, offline file access, stable IDs, and parallel triggers. No downloadable/signed helper is shipped with these docs. Prefer separate per-source archives to reduce concurrent append conflicts. A local append also can fail: no filesystem operation is magically durable.</p>
-<h3>Recover a verified archive</h3>
-<p>When your app version exposes <strong>Settings → Recover shortcut archive</strong>, select the <code>.jsonl</code> file there. If the control is absent, the feature is not installed; retain the file and ask the deployment owner rather than posting the entire growing file yourself.</p>
-<p>- Each line must be one complete JSON event object with its original <code>event_id</code> and <code>at</code>.</p>
-<p>- Recovery requests are NDJSON batches of <strong>at most 100 events AND at most 64 KiB per request</strong>, including UTF-8 bytes and newline separators. Whichever limit is reached first wins. A single oversized event cannot fit and requires explicit handling.</p>
-<p>- The recovery importer must split the file, preserve IDs, show rejected lines and acknowledgments, and be restart-safe. The direct per-event request still uses <code>Content-Type: application/json</code>; do not relabel a whole JSONL file as one JSON object.</p>
-<p>- Keep the original archive until <strong>every intended event has a successful acknowledgment</strong>. A selected file, a started upload, or a generic HTTP success is not per-event confirmation. Never clear the archive merely because the newest event uploaded.</p>
-<p>- The archive is a resend buffer, not the authoritative ledger or a full ledger backup. It contains sensitive merchant/message information; secure it, and apply a retention policy after verified recovery.</p>
-<h2>10. Troubleshooting</h2>
-<div class="table"><table>
-<tr><td>Symptom</td><td>Check / next action</td></tr>
-<tr><td>Nothing happens</td><td>Automation enabled? Right source/card? Immediate execution allowed? Permissions approved? New card selected?</td></tr>
-<tr><td>Car-key tap starts capture</td><td>Change Any to selected payment cards; untick keys/passes.</td></tr>
-<tr><td><code>Amount</code> or <code>Body</code> arrives literally</td><td>Delete the typed word and insert the actual variable pill/property.</td></tr>
-<tr><td>Empty transaction during ▶</td><td>Expected without a real trigger; use the synthetic fixture, not a real charge.</td></tr>
-<tr><td>Unauthorized / 401</td><td>Exact <code>Authorization</code> header, <code>Bearer </code> space, correct upload token, revoked token? Never share it for debugging.</td></tr>
-<tr><td>HTML/login page</td><td>Wrong origin/path, redirect, or deployment access policy blocking machine uploads; ask owner to inspect the route without weakening auth.</td></tr>
-<tr><td>Bad JSON / 400 / 422</td><td>JSON body mode, exact lowercase type, UUID variable, ISO date; inspect the readable error. Don&#x27;t blindly repeat a rejected event.</td></tr>
-<tr><td>Too large / 413</td><td>Recovery must obey both batch limits; never send the entire archive in one request.</td></tr>
-<tr><td>Throttled / 429 or server/network error</td><td>Retain event; retry later with the same ID. Direct POST alone has no automatic retry.</td></tr>
-<tr><td>Notification shows a filename</td><td>Set Contents of URL variable to Text in Show Notification.</td></tr>
-<tr><td>Two entries for one purchase</td><td>Wallet plus SMS may both fire. Inspect cross-source duplicates; do not assume ID dedupe matches two different IDs.</td></tr>
-<tr><td>TNG trigger missing</td><td>Unsupported on this phone/version. Use manual entry; no universal notification access exists.</td></tr>
-<tr><td>Unknown SMS bank/format</td><td>Review manually and send only a redacted sample to the owner; never include OTPs, full card/account numbers, or token.</td></tr>
-<tr><td>Duplicate files or missing archive events</td><td>Verify every writer uses the same intended folder/path for that source; don&#x27;t mistake the previous action&#x27;s File output for a folder.</td></tr>
-</table></div>
-<h2>Privacy checklist</h2>
-<p>Use HTTPS; keep upload credentials private; select only intended apps/cards/messages; never upload OTPs, security codes, passwords, full card numbers, or entire message histories. Use a card label/limited identifier only when actually supplied. Raw messages and archives contain personal financial data even without a full card number. A single-owner deployment is not a multi-user sharing system: friends should use their own owner/deployment or an explicitly designed account boundary. Do not publish your archive or signed shortcut containing a token.</p>
-<h2>Sources and verification boundary</h2>
-<p>- <a href="https://support.apple.com/guide/shortcuts/request-your-first-api-apd58d46713f/ios">Apple: Request your first API</a>: POST exposes JSON/Form/File Request Body and supports variables.</p>
-<p>- <a href="https://support.apple.com/guide/shortcuts/dictionaries-apd43b69f337/ios">Apple: Using Dictionaries</a>: structured values and creation of JSON dictionaries; not a compact JSONL guarantee.</p>
-<p>- <a href="https://support.apple.com/guide/shortcuts/intro-to-using-json-apd0f2e057df/ios">Apple: Intro to JSON</a>: dictionary/list structure.</p>
-<p>- Project setup lessons adapted from <code>private-tailnet-pwa/references/shortcut-setup-guides.md</code>: literal-only copy, real variable pills, message body input, selected-card exclusion, readable replies, file-folder consistency. Old T2 queue formats, Tailscale auth, exact legacy reply prefixes, and unverified iOS-version claims are deliberately not carried over.</p>
-<p>No real iPhone trigger, bank message, payment, archive serializer, or deployed backend was exercised while authoring this documentation. Follow the acceptance checks above before relying on capture.</p></main></html>
+<tr><td>Symptom</td><td>Likely Cause</td><td>Quick Fix</td></tr>
+<tr><td>Nothing happens after payment</td><td>Automation not enabled or not set to Run Immediately</td><td>Check Shortcuts Automation tab, ensure toggle is ON and set to Run Immediately.</td></tr>
+<tr><td>Car key / door badge triggers an entry</td><td>Card or Pass set to "Any Card"</td><td>Edit automation, untick non-payment passes, keep only payment cards.</td></tr>
+<tr><td>Amount logged as RM 0.00</td><td>Typed literal word "Amount"</td><td>Delete the word in Shortcuts, tap field and pick the blue variable pill.</td></tr>
+<tr><td>401 Unauthorized</td><td>Missing or invalid Upload Key</td><td>Check <code>Authorization</code> header has <code>Bearer <Token></code> with a space in between.</td></tr>
+<tr><td>Notification shows a file name</td><td>Variable type mismatch</td><td>Tap <code>Contents of URL</code> inside Show Notification and set type to <strong>Text</strong>.</td></tr>
+</table></div></main></html>

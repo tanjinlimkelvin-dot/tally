@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="460" viewBox="0 0 900 460" role="img" aria-labelledby="s1-title s1-desc">
+  <title id="s1-title">Step 1: Set Up iOS Automation Trigger</title>
+  <desc id="s1-desc">Visual 3-step guide for creating an Apple Pay transaction automation in iPhone Shortcuts.</desc>
+  <rect width="900" height="460" fill="#f4f1eb" rx="16"/>
+  <rect x="2" y="2" width="896" height="456" fill="none" stroke="#e0dbd1" stroke-width="2" rx="14"/>
+
+  <!-- Title Section -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif">
+    <text x="36" y="46" font-size="22" font-weight="700" fill="#1d1c19">Step 1: Create an Apple Pay Automation in iOS Shortcuts</text>
+    <text x="36" y="74" font-size="14" fill="#68645e">Open Shortcuts app → Go to Automation tab → Tap ＋ → Select "Transaction"</text>
+
+    <!-- Card 1: Automation Tab -->
+    <g transform="translate(36, 100)">
+      <rect width="256" height="310" rx="14" fill="#ffffff" stroke="#d5cfc5" stroke-width="1.5"/>
+      <rect x="16" y="18" width="30" height="30" rx="8" fill="#f5d000"/>
+      <text x="26" y="39" font-size="16" font-weight="700" fill="#1d1c19">1</text>
+      <text x="56" y="38" font-size="16" font-weight="600" fill="#1d1c19">Automation Tab</text>
+      
+      <!-- Mini UI Screen Mockup -->
+      <rect x="16" y="62" width="224" height="170" rx="10" fill="#f9f8f6" stroke="#e6e1d8"/>
+      <text x="28" y="92" font-size="13" font-weight="600" fill="#8c877e">SHORTCUTS</text>
+      <rect x="28" y="106" width="200" height="44" rx="8" fill="#ffffff" stroke="#e2ded6"/>
+      <text x="40" y="132" font-size="14" fill="#1d1c19">Personal Automations</text>
+
+      <!-- Bottom Tab Bar -->
+      <rect x="16" y="192" width="224" height="40" rx="0" fill="#ece8df"/>
+      <text x="42" y="217" font-size="12" fill="#8c877e">Shortcuts</text>
+      <!-- Active Tab Highlight -->
+      <rect x="110" y="196" width="118" height="32" rx="6" fill="#f5d000"/>
+      <text x="122" y="217" font-size="13" font-weight="700" fill="#1d1c19">⚡ Automation</text>
+
+      <text x="16" y="260" font-size="14" font-weight="600" fill="#1d1c19">Open Shortcuts App</text>
+      <text x="16" y="282" font-size="12" fill="#68645e">Tap the middle "Automation" tab at bottom</text>
+    </g>
+
+    <!-- Card 2: Pick Transaction -->
+    <g transform="translate(322, 100)">
+      <rect width="256" height="310" rx="14" fill="#ffffff" stroke="#d5cfc5" stroke-width="1.5"/>
+      <rect x="16" y="18" width="30" height="30" rx="8" fill="#f5d000"/>
+      <text x="26" y="39" font-size="16" font-weight="700" fill="#1d1c19">2</text>
+      <text x="56" y="38" font-size="16" font-weight="600" fill="#1d1c19">Pick "Transaction"</text>
+      
+      <!-- Mini UI Screen Mockup -->
+      <rect x="16" y="62" width="224" height="170" rx="10" fill="#f9f8f6" stroke="#e6e1d8"/>
+      <text x="28" y="86" font-size="12" font-weight="600" fill="#8c877e">New Automation (+)</text>
+      
+      <rect x="24" y="98" width="208" height="40" rx="8" fill="#ffffff" stroke="#e2ded6"/>
+      <text x="36" y="123" font-size="13" fill="#8c877e">Time of Day / Alarm</text>
+      
+      <rect x="24" y="146" width="208" height="48" rx="8" fill="#eff6ff" stroke="#0071e3" stroke-width="1.5"/>
+      <text x="36" y="174" font-size="18">💳</text>
+      <text x="64" y="168" font-size="14" font-weight="700" fill="#0071e3">Transaction</text>
+      <text x="64" y="185" font-size="11" fill="#4b8cd6">When I tap a Wallet card</text>
+
+      <text x="16" y="260" font-size="14" font-weight="600" fill="#1d1c19">Tap ＋ in top right</text>
+      <text x="16" y="282" font-size="12" fill="#68645e">Find &amp; select "Transaction" (Wallet icon)</text>
+    </g>
+
+    <!-- Card 3: Configure Trigger -->
+    <g transform="translate(608, 100)">
+      <rect width="256" height="310" rx="14" fill="#ffffff" stroke="#d5cfc5" stroke-width="1.5"/>
+      <rect x="16" y="18" width="30" height="30" rx="8" fill="#f5d000"/>
+      <text x="26" y="39" font-size="16" font-weight="700" fill="#1d1c19">3</text>
+      <text x="56" y="38" font-size="16" font-weight="600" fill="#1d1c19">Cards &amp; Immediate</text>
+      
+      <!-- Mini UI Screen Mockup -->
+      <rect x="16" y="62" width="224" height="170" rx="10" fill="#f9f8f6" stroke="#e6e1d8"/>
+      <text x="26" y="86" font-size="12" fill="#1d1c19">Card or Pass:</text>
+      <rect x="26" y="94" width="204" height="32" rx="6" fill="#ffffff" stroke="#d5cfc5"/>
+      <text x="36" y="115" font-size="12" font-weight="600" fill="#1d1c19">Selected: Payment Cards</text>
+      <text x="36" y="138" font-size="11" fill="#c93b3b">⚠️ Untick car keys &amp; door passes</text>
+
+      <line x1="26" y1="150" x2="230" y2="150" stroke="#e0dbd1" stroke-width="1"/>
+      <circle cx="36" cy="172" r="7" fill="#0071e3"/>
+      <circle cx="36" cy="172" r="3" fill="#ffffff"/>
+      <text x="50" y="176" font-size="13" font-weight="700" fill="#1d1c19">Run Immediately</text>
+      <text x="50" y="194" font-size="11" fill="#68645e">Turn off "Ask Before Running"</text>
+
+      <text x="16" y="260" font-size="14" font-weight="600" fill="#1d1c19">Select Cards → Next</text>
+      <text x="16" y="282" font-size="12" fill="#68645e">Choose "New Blank Automation"</text>
+    </g>
+  </g>
+</svg>

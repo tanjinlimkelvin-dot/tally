@@ -96,6 +96,12 @@ export async function ingest(req, db) {
   }
   if (!objects.length || objects.length > 100)
     fail(422, "Batch must contain 1–100 events");
+  for (const o of objects) {
+    if (o && typeof o === "object") {
+      if (!o.event_id || !uuid.test(o.event_id)) o.event_id = crypto.randomUUID();
+      if (!o.at) o.at = now();
+    }
+  }
   const count = {
     accepted: 0,
     duplicates: 0,
